@@ -32,7 +32,14 @@ namespace DB.Repository
         }
         public IEnumerable<T> Find(Expression<Func<T, bool>> expression)
         {
-            return _context.Set<T>().Where(expression);
+            try 
+            { 
+                return _context.Set<T>().Where(expression);
+            }
+            catch (ArgumentNullException)
+            {
+                return null;
+            }
         }
         public IEnumerable<T> GetAll()
         {
@@ -53,6 +60,11 @@ namespace DB.Repository
         public void RemoveRange(IEnumerable<T> entities)
         {
             _context.Set<T>().RemoveRange(entities);
+        }
+
+        public T FindFirstorDefault(Expression<Func<T, bool>> expression)
+        {
+            return _context.Set<T>().FirstOrDefault(expression);
         }
     }
 }

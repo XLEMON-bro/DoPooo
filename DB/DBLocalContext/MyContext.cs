@@ -7,9 +7,9 @@ namespace DB
     {
         public DbSet<User> User { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public MyContext(DbContextOptions<MyContext> options) : base(options)
         {
-            optionsBuilder.UseSqlServer(@"Data Source=localhost\SQLEXPRESS;Database=SummerProject;Trusted_Connection=True;");
+            Database.Migrate();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
