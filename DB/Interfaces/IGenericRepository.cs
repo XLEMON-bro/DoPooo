@@ -14,5 +14,6 @@ namespace DB.Interfaces
         public void AddRangeAsync(IEnumerable<T> entities);
         void Remove(T entity);
         void RemoveRange(IEnumerable<T> entities);
+        T FindFirstorDefault(Expression<Func<T, bool>> expression);
     }
 }
