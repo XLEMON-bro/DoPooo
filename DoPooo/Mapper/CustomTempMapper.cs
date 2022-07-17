@@ -1,5 +1,6 @@
 ﻿using DoPooo.ViewModel;
 using DB.Entities;
+using DoPooo.Encyption;
 
 namespace DoPooo.Mapper
 {
@@ -12,7 +13,7 @@ namespace DoPooo.Mapper
                 Surname = userRegistrationViewModel.LastName,
                 Name = userRegistrationViewModel.FirstName,
                 Email = userRegistrationViewModel.Email,
-                Password = userRegistrationViewModel.Password
+                Password = SHA256Encryption.EncryptText(userRegistrationViewModel.Password)
             };
 
             return user;

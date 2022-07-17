@@ -13,7 +13,7 @@ builder.Services.AddAuthentication("MyCookieAuth").AddCookie("MyCookieAuth", opt
     opt.ExpireTimeSpan= TimeSpan.FromDays(30);
 });
 
-builder.Services.AddDistributedMemoryCache();
+//builder.Services.AddDistributedMemoryCache();
 
 builder.Services.AddDbContext<MyContext>(opt => opt.UseSqlServer(@"Data Source=localhost\SQLEXPRESS;Database=SummerProject;Trusted_Connection=True;"));
 
@@ -27,7 +27,6 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
@@ -41,5 +40,6 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
 
 app.Run();

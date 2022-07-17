@@ -16,7 +16,7 @@ namespace DB.Repository
         {
             _context.Set<T>().Add(entity);
         }
-        public async void AddAsync(T entity)
+        public async Task AddAsync(T entity)
         {
             _context.Set<T>().AddAsync(entity);
             _context.SaveChangesAsync();

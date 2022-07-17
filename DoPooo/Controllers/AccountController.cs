@@ -8,6 +8,7 @@ using DB.Repository;
 using DB.Interfaces;
 using DB.Entities;
 using DB;
+using DoPooo.Encyption;
 
 namespace DoPooo.Controllers
 {
@@ -27,7 +28,7 @@ namespace DoPooo.Controllers
         {
             return View();
         }
-
+        
         [HttpPost]
         public async Task<IActionResult> Register(UserRegistrationViewModel userRegistrationViewModel)
         {
@@ -39,7 +40,7 @@ namespace DoPooo.Controllers
                 {
                     var user = _CustomTempMapper.MapToUser(userRegistrationViewModel);
 
-                    _db.AddAsync(user);
+                    await _db.AddAsync(user);
 
                     await Authentication(user.Email,user.Name);
 
@@ -48,7 +49,6 @@ namespace DoPooo.Controllers
             }
             else
                 ModelState.AddModelError("", "User with that email already exist");
-
 
             return View(userRegistrationViewModel);
         }
@@ -64,7 +64,7 @@ namespace DoPooo.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = _db.FindFirstorDefault(u => u.Password == userLoginViewModel.Password &&
+                var user = _db.FindFirstorDefault(u => SHA256Encryption.EncryptText(u.Password) == userLoginViewModel.Password &&
                                                                          u.Email == userLoginViewModel.Email);
                 if (user != null)
                 {
