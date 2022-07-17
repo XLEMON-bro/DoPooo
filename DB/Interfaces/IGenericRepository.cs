@@ -9,7 +9,7 @@ namespace DB.Interfaces
         IEnumerable<T> GetAll();
         IEnumerable<T> Find(Expression<Func<T, bool>> expression);
         void Add(T entity);
-        public void AddAsync(T entity);
+        public Task AddAsync(T entity);
         void AddRange(IEnumerable<T> entities);
         public void AddRangeAsync(IEnumerable<T> entities);
         void Remove(T entity);
