@@ -7,8 +7,9 @@ namespace DoPooo.Encyption
     {
         public static string EncryptText(string text) 
         {
-            if (String.IsNullOrWhiteSpace(text)) 
-                throw new Exception("Password in incorrect format.");
+            if (String.IsNullOrWhiteSpace(text))
+                return String.Empty;
+                //throw new Exception("Text is empty for Encryption.");
 
             byte[] arr = Encoding.UTF8.GetBytes(text);
             SHA256 sha = SHA256.Create();

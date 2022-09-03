@@ -62,16 +62,20 @@ namespace DoPooo.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(UserLoginViewModel userLoginViewModel)
         {
-            if (ModelState.IsValid)
+            var userPassword = SHA256Encryption.EncryptText(userLoginViewModel.Password);
+
+            if (ModelState.IsValid && !string.IsNullOrEmpty(userPassword))
             {
-                var user = _db.FindFirstorDefault(u => SHA256Encryption.EncryptText(u.Password) == userLoginViewModel.Password &&
-                                                                         u.Email == userLoginViewModel.Email);
+                var user = _db.FindFirstorDefault(u => u.Password == userPassword &&
+                                                       u.Email == userLoginViewModel.Email);
+
                 if (user != null)
                 {
                     await Authentication(user.Email,user.Name);
 
                     return RedirectToAction("Index", "Home");
                 }
+
                 ModelState.AddModelError("", "Incorrect login or password");
             }
 
@@ -95,6 +99,7 @@ namespace DoPooo.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync("MyCookieAuth");
+
             return RedirectToAction("Index", "Home");
         }
     }
