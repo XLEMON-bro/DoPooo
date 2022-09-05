@@ -1,10 +1,15 @@
 using DB;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+var confbuilder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json",optional:false);
+IConfiguration configuration = confbuilder.Build();
 
 builder.Services.AddAuthentication("MyCookieAuth").AddCookie("MyCookieAuth", opt =>
 {
@@ -13,10 +18,11 @@ builder.Services.AddAuthentication("MyCookieAuth").AddCookie("MyCookieAuth", opt
     opt.ExpireTimeSpan= TimeSpan.FromDays(30);
 });
 
-//builder.Services.AddDistributedMemoryCache();
+builder.Services.AddMemoryCache();
 
-builder.Services.AddDbContext<MyContext>(opt => opt.UseSqlServer(@"Data Source=localhost\SQLEXPRESS;Database=SummerProject;Trusted_Connection=True;"));
+builder.Services.AddDbContext<MyContext>(opt => opt.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.Add(ServiceDescriptor.Singleton<IMemoryCache, MemoryCache>());
 
 var app = builder.Build();
 

@@ -7,7 +7,7 @@ using MimeKit.Text;
 
 namespace DoPooo.Services
 {
-    public class Mail : IMail
+    public class Mail : IServices.IMailService
     {
         public void Send(string to, string subject, string html, string from = null)
         {
@@ -24,7 +24,7 @@ namespace DoPooo.Services
             smtp.Disconnect(true);
             /* Изменить параметры Connection Auntificate Email.From.Add(from)
              *
-                                   */
+             */
         }
     }
 }
